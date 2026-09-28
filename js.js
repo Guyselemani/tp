@@ -1,14 +1,13 @@
 //mission 1
 const nom = "Jonathan";
-const age = 17;
+let age = 17;
 const ville = "Goma";
 const formation = "Développement web";
-const fraisFormation = 150;
+let fraisFormation = 150;
 
-let montantPaye = 95;
+let montantPaye = 113;
 let carteEtudiant = true;
 let compteActif = true;
-
 let autorisationParentale = false;
 
 console.log(`
@@ -27,6 +26,7 @@ console.log(typeof nom);
 console.log(typeof age);
 console.log(typeof montantPaye);
 console.log(typeof carteEtudiant);
+
 //missoin 2
 let noteHTML = 85;
 let noteCSS = 68;
@@ -42,21 +42,81 @@ let total =
   noteBaseDeDonnees +
   noteReseau;
 let moyenne = total / 6;
-console.log(`vous avex eu ${total}`);
+console.log(`vous avez eu ${total}`);
 console.log(`votre moyenne est ${moyenne}`);
-console.log(`votre pour centage est ${(moyenne * 100) / 100} %`);
-if (moyenne === 80 || moyenne <= 100) {
-  console.log(`vous etes exelent `);
-} else if (moyenne < 80 || moyenne === 70) {
-  console.log(`tres biens`);
-} else if (moyenne < 70 || moyenne === 60) {
+console.log(`votre pourcentage est ${moyenne} %`);
+if (moyenne >= 80) {
+  console.log(`vous êtes excellent`);
+} else if (moyenne >= 70) {
+  console.log(`très bien`);
+} else if (moyenne >= 60) {
   console.log(`bien`);
-} else if (moyenne < 60 || moyenne === 50) {
+} else if (moyenne >= 50) {
   console.log(`passable`);
-} else if (moyenne === 50 && noteJavaScript === 50) {
-  console.log(`vous etes admin`);
+} else {
+  console.log(`vous êtes ajourné parce que vous n'avez pas assez de moyenne`);
+}
+
+//mission 3
+let reste_a_payer = fraisFormation - montantPaye;
+const pourcentage_payer = (montantPaye * 100) / fraisFormation;
+if (pourcentage_payer >= 75 && carteEtudiant === true && compteActif === true) {
+  console.log(
+    `vous pouvez passer l'examen parce que vous avez déjà payé ${pourcentage_payer}% et vous avez une carte d'étudiant et votre compte est actif`,
+  );
 } else {
   console.log(
-    `vous estes ajournee prceque vous n'avez pas eu assez des moyenne `,
+    "vous n'êtes pas éligible pour passer les examens parce que vous ne remplissez pas nos conditions",
   );
 }
+
+//mission 4
+const affichage = document.getElementById("affichage");
+const noms = "Katembo Selemani Guy-Leon";
+document.getElementById("nomEtudiant").textContent = noms;
+
+document.getElementById("bouttonResultats").addEventListener("click", () => {
+  affichage.textContent = `Résultats :\nNom : ${noms}\nMoyenne : ${moyenne}\nTotal : ${total}`;
+});
+
+document.getElementById("bouttonFrais").addEventListener("click", () => {
+  const reste = fraisFormation - montantPaye;
+  const pourcentage = (montantPaye * 100) / fraisFormation;
+  affichage.textContent = `Frais de formation : ${fraisFormation} $\nMontant payé : ${montantPaye} $\nReste à payer : ${reste} $\nPourcentage payé : ${pourcentage}%`;
+});
+
+document.getElementById("bouttonExamens").addEventListener("click", () => {
+  const message =
+    pourcentage_payer >= 75 && carteEtudiant && compteActif
+      ? "Vous pouvez passer l'examen."
+      : "Vous n'êtes pas éligible pour passer l'examen.";
+  affichage.textContent = message;
+  alert(message);
+});
+
+document.getElementById("bouttonsPaiement").addEventListener("click", () => {
+  const saisie = prompt("Entrer le nouveau montant payé", String(montantPaye));
+
+  if (saisie === null) {
+    return;
+  }
+  if (saisie.trim() === "") {
+    alert("Entrez un montant");
+    return;
+  }
+
+  const nouveauMontant = Number(saisie.replace(",", "."));
+  if (
+    !Number.isFinite(nouveauMontant) ||
+    nouveauMontant < 0 ||
+    nouveauMontant > fraisFormation
+  ) {
+    alert(`Entrez un montant entre 0 et ${fraisFormation} $.`);
+    return;
+  }
+
+  montantPaye = nouveauMontant;
+  const message = `Nouveau montant payé : ${montantPaye} $\nReste à payer : ${fraisFormation - montantPaye} $`;
+  affichage.textContent = message;
+  console.log(message);
+});
